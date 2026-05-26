@@ -1,0 +1,24 @@
+name: "Ransomware Containment (CountryEdu)"
+description: "Automated response playbook for Section 2 & 3 containment actions."
+steps:
+  - name: "Isolate Subnets (Emergency Microsegmentation)"
+    action: "firewall.microsegment"
+    params:
+      reason: "Automated response to ransomware alert"
+      
+  - name: "Block SMB Protocols"
+    action: "firewall.block_smb"
+    params:
+      reason: "Automated lateral movement prevention"
+      
+  - name: "Revoke Compromised User Sessions"
+    action: "msgraph.revoke_sessions"
+    params:
+      user_id: "{{ target_user }}"
+      
+  - name: "Manager Approval for Kill-Switch"
+    require_approval: true
+    action: "killswitch.activate_level"
+    params:
+      level: 3
+      reason: "Escalate to Level 3 network isolation"
