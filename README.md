@@ -289,6 +289,9 @@ ruff check .
 
 ---
 
+## 🧪 Demo Guide
+
+A dedicated demo guide is available in [`DEMO.md`](DEMO.md) with step-by-step commands, example demo data, and a safe demo flow.
 ## 📜 License
 
 MIT License
