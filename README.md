@@ -1,32 +1,58 @@
 # SentinelCommand
 
-SentinelCommand is a unified cybersecurity operations platform built with FastAPI. It provides modular tooling for incident containment, session revocation, firewall enforcement, backup verification, UBA anomaly detection, simulation, and observability.
+[![Status](https://img.shields.io/badge/status-beta-blue)](https://github.com/your-org/sentinelcommand)
+[![Python](https://img.shields.io/badge/python-3.11%2B-brightgreen)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
-## Key Features
+A polished cybersecurity operations platform built for real-world incident response and automation.
 
-- API-first architecture with FastAPI
-- Modular security workflows and orchestration
-- Async-first persistence with SQLAlchemy + aiosqlite
-- JWT authentication and audit-ready configuration
-- Metrics support with Prometheus
-- Extensible CLI for server and module operations
-- Static dashboard served from built-in UI assets
+SentinelCommand combines a modular FastAPI backend, async data handling, built-in observability, and command-line orchestration so security teams can respond faster and automate operational workflows.
 
-## Project Structure
+---
 
-- `main.py` — FastAPI application entry point
-- `sentinelcommand/cli.py` — unified CLI entry point and commands
-- `sentinelcommand/core/` — configuration, auth, database, metrics, and shared services
-- `sentinelcommand/modules/` — security modules and corresponding routes, schemas, and engines
-- `data/` — runtime data storage
-- `logs/` — runtime logs
+## 🚀 What It Does
 
-## Getting Started
+- Manages security workflows through modular API routes
+- Protects and revokes risky sessions
+- Applies firewall controls and containment actions
+- Verifies backup integrity and system resilience
+- Detects UBA anomalies with stream processing support
+- Runs simulation scenarios for incident drills
+- Exposes metrics for monitoring and performance tracking
 
-### Requirements
+## 🎯 Core Benefits
 
-- Python 3.11 or newer
-- `pip` package manager
+- FastAPI-powered API with modern async execution
+- Configurable via `.env` and environment variables
+- Built-in metrics support with Prometheus
+- CLI-driven developer experience and operations
+- Production-ready packaging with setuptools
+- Clear separation between core services and modules
+
+## 📁 Project Layout
+
+```text
+main.py
+sentinelcommand/
+├── cli.py
+├── core/
+│   ├── auth.py
+│   ├── config.py
+│   ├── database.py
+│   ├── metrics.py
+│   └── ...
+└── modules/
+    ├── backup_verify/
+    ├── firewall/
+    ├── killswitch/
+    ├── session_revoke/
+    ├── simulation/
+    ├── syslog_monitor/
+    ├── uba_anomaly/
+    └── uba_production/
+```
+
+## 💡 Quick Start
 
 ### Install
 
@@ -35,15 +61,13 @@ python -m pip install --upgrade pip
 pip install -e .
 ```
 
-### Configuration
+### Configure
 
-Copy the sample environment file and customize the settings for your deployment:
-
-```bash
+```powershell
 copy .env.example .env
 ```
 
-Update these values before deploying to production:
+Edit `.env` and set production-ready values for:
 
 - `JWT_SECRET`
 - `AUDIT_HMAC_KEY`
@@ -52,65 +76,57 @@ Update these values before deploying to production:
 - `LOG_LEVEL=INFO`
 - `HOST` / `PORT`
 
-Optional integrations:
+Optional:
 
-- Azure AD via `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`
-- Kafka via `KAFKA_BOOTSTRAP_SERVERS`, `KAFKA_TOPIC`, `KAFKA_GROUP_ID`
-- Webhooks via `WEBHOOK_URL`, `WEBHOOK_TYPE`
+- `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`
+- `KAFKA_BOOTSTRAP_SERVERS`, `KAFKA_TOPIC`, `KAFKA_GROUP_ID`
+- `WEBHOOK_URL`, `WEBHOOK_TYPE`
 
-## Run the Application
+## ▶️ Run Locally
 
-### Development
+### Development mode
 
 ```bash
 python -m sentinelcommand.cli server --host 0.0.0.0 --port 8000 --reload
 ```
 
-or with Uvicorn directly:
-
-```bash
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-```
-
-### Production
-
-For production use a process manager and a dedicated ASGI server. Example:
+### Production mode
 
 ```bash
 uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
 ```
 
-Use a managed database instead of SQLite for scale and reliability.
+> Use a real database backend in production instead of SQLite.
 
-## CLI Usage
+## 🧰 CLI Commands
 
-The project exposes a top-level CLI command after installation:
+The package exposes a top-level CLI:
 
 ```bash
 sentinelcommand --help
 ```
 
-Start the API server:
+Start the API:
 
 ```bash
 sentinelcommand server
 ```
 
-Module commands are registered under the CLI and can be discovered via help.
+Each module also provides its own CLI entry points for specialized workflows.
 
-## Health and Observability
+## 🔍 Health & Monitoring
 
-- `GET /health` — health-check endpoint
-- Metrics are enabled by default and exposed via the metrics router when configured
+- `GET /health` — readiness and health probe
+- Prometheus metrics enabled by default when configured
 
-## Security Notes
+## 🛡️ Security Reminder
 
-- Never use default credentials or development secrets in production.
-- Rotate `JWT_SECRET` and `AUDIT_HMAC_KEY` to strong random values.
-- Disable `SIMULATION_MODE` in live production deployments.
-- Ensure database files and logs are protected by appropriate filesystem permissions.
+- Do not use default secrets in production
+- Rotate `JWT_SECRET` and `AUDIT_HMAC_KEY` regularly
+- Set `SIMULATION_MODE=false` for live deployments
+- Protect log and database files with proper permissions
 
-## Development and Testing
+## 🧪 Development & Testing
 
 Install dev dependencies:
 
@@ -124,28 +140,28 @@ Run tests:
 pytest
 ```
 
-Linting:
+Run linting:
 
 ```bash
 ruff check .
 ```
 
-## Packaging
+## 📦 Packaging
 
-This project is packaged with setuptools. Build source and wheel distributions with:
+Build distributables:
 
 ```bash
 python -m build
 ```
 
-## Recommended Production Practices
+## ✅ Deployment Checklist
 
-- Use `DATABASE_URL` pointing to a production-grade database such as PostgreSQL
-- Configure secrets through environment variables or secure secret management
-- Run behind a reverse proxy / load balancer
-- Enable HTTPS/TLS for all external traffic
-- Monitor logs and metrics continuously
+- [ ] `DATABASE_URL` points at PostgreSQL, MySQL, or other managed DB
+- [ ] Secrets are stored securely, not in source control
+- [ ] HTTPS is enabled for external traffic
+- [ ] Metrics and logs are monitored
+- [ ] `SIMULATION_MODE=false` for production
 
-## License
+## 📜 License
 
 MIT License
