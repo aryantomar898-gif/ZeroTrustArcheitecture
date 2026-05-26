@@ -81,6 +81,23 @@ sentinelcommand server --host 0.0.0.0 --port 8000 --reload
 
 This command starts the FastAPI service and loads all registered module routers.
 
+### Authentication (`auth`)
+
+A new login endpoint is available so you can obtain a JWT token for protected API routes.
+
+- `POST /api/v1/auth/login` — authenticate with username and password
+
+Example request body:
+
+```json
+{
+  "username": "admin",
+  "password": "admin"
+}
+```
+
+The endpoint returns an access token that can be used with the `Authorization: Bearer <token>` header for protected routes, including `/api/v1/syslog/analyze`.
+
 ### Session Revocation (`session-revoke`)
 
 Use the Session Revocation module to manage Microsoft Entra ID user sessions.
@@ -292,6 +309,9 @@ ruff check .
 ## 🧪 Demo Guide
 
 A dedicated demo guide is available in [`DEMO.md`](DEMO.md) with step-by-step commands, example demo data, and a safe demo flow.
+
+---
+
 ## 📜 License
 
 MIT License
